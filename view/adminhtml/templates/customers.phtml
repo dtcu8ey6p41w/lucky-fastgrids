@@ -1,0 +1,38 @@
+<?php
+/** @var \Lucky\FastGrids\Block\Adminhtml\Customers $block */
+/** @var \Magento\Framework\Escaper $escaper */
+?>
+<div id="fastgrids-customers" class="fastgrids" data-config="<?= $escaper->escapeHtmlAttr($block->getConfigJson()) ?>">
+
+    <form class="fg-filters" id="fg-filters" autocomplete="off">
+        <label class="fg-f fg-f-q">
+            <span><?= $escaper->escapeHtml(__('Zoeken')) ?></span>
+            <input type="search" name="q" placeholder="<?= $escaper->escapeHtmlAttr(__('Naam, e-mail, adres, telefoon, klant-ID…')) ?>">
+        </label>
+        <div class="fg-f">
+            <span><?= $escaper->escapeHtml(__('Groep')) ?></span>
+            <details class="fg-dropdown">
+                <summary data-default="<?= $escaper->escapeHtmlAttr(__('Alle')) ?>"><?= $escaper->escapeHtml(__('Alle')) ?></summary>
+                <div class="fg-dropdown-list">
+                    <?php foreach ($block->getGroupOptions() as $id => $label): ?>
+                        <label><input type="checkbox" name="group_id" value="<?= (int) $id ?>"> <?= $escaper->escapeHtml($label) ?></label>
+                    <?php endforeach; ?>
+                </div>
+            </details>
+        </div>
+        <label class="fg-f">
+            <span><?= $escaper->escapeHtml(__('Klant sinds')) ?></span>
+            <input type="date" name="created_from">
+        </label>
+        <label class="fg-f">
+            <span><?= $escaper->escapeHtml(__('t/m')) ?></span>
+            <input type="date" name="created_to">
+        </label>
+        <div class="fg-f fg-f-actions">
+            <button type="submit" class="action-primary"><?= $escaper->escapeHtml(__('Filter')) ?></button>
+            <button type="button" class="action-secondary" id="fg-reset"><?= $escaper->escapeHtml(__('Wissen')) ?></button>
+        </div>
+    </form>
+
+    <?= /* @noEscape */ $block->fetchView($block->getTemplateFile('Lucky_FastGrids::grid_table.phtml')) ?>
+</div>

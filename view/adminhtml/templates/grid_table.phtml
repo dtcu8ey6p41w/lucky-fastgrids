@@ -1,0 +1,53 @@
+<?php
+/**
+ * Gedeeld deel van beide grids: samenvattingsbalk, kolomkiezer, paginering en tabel.
+ * Verwacht $block->getColumns(): sleutel => [label, sorteersleutel of null, standaard zichtbaar].
+ * @var \Magento\Backend\Block\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$columns = $block->getColumns();
+?>
+<div class="fg-bar">
+    <div class="fg-summary" id="fg-summary"><?= $escaper->escapeHtml(__('Laden…')) ?></div>
+    <div class="fg-bar-right">
+        <details class="fg-dropdown fg-columns">
+            <summary><?= $escaper->escapeHtml(__('Kolommen')) ?></summary>
+            <div class="fg-dropdown-list">
+                <?php foreach ($columns as $key => [$label, $sort, $visible]): ?>
+                    <label><input type="checkbox" data-col-toggle="<?= $escaper->escapeHtmlAttr($key) ?>" <?= $visible ? 'checked' : '' ?>> <?= $escaper->escapeHtml($label) ?></label>
+                <?php endforeach; ?>
+            </div>
+        </details>
+        <label class="fg-limit">
+            <?= $escaper->escapeHtml(__('Per pagina')) ?>
+            <select id="fg-limit">
+                <?php foreach ([20, 50, 100, 200, 500] as $n): ?>
+                    <option value="<?= $n ?>"><?= $n ?></option>
+                <?php endforeach; ?>
+            </select>
+        </label>
+        <nav class="fg-pager" id="fg-pager-top"></nav>
+    </div>
+</div>
+
+<div class="fg-table-wrap">
+    <table class="fg-table" id="fg-table">
+        <thead>
+            <tr>
+                <?php foreach ($columns as $key => [$label, $sort, $visible]): ?>
+                    <th draggable="true"
+                        title="<?= $escaper->escapeHtmlAttr(__('Sleep om te verplaatsen')) ?><?= $sort ? $escaper->escapeHtmlAttr(__(', klik om te sorteren')) : '' ?>"
+                        data-col="<?= $escaper->escapeHtmlAttr($key) ?>"<?= $sort ? ' data-sort="' . $escaper->escapeHtmlAttr($sort) . '" class="fg-sortable"' : '' ?><?= $visible ? '' : ' hidden' ?>>
+                        <?= $escaper->escapeHtml($label) ?><span class="fg-sort-ind"></span>
+                    </th>
+                <?php endforeach; ?>
+            </tr>
+        </thead>
+        <tbody id="fg-body"></tbody>
+    </table>
+</div>
+
+<div class="fg-bar fg-bar-bottom">
+    <div class="fg-summary" id="fg-summary-bottom"></div>
+    <nav class="fg-pager" id="fg-pager-bottom"></nav>
+</div>

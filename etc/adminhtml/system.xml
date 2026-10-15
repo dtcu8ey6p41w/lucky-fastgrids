@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="lucky" translate="label" sortOrder="400">
+            <label>Lucky</label>
+        </tab>
+        <section id="lucky_fastgrids" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+            <class>separator-top</class>
+            <label>Fast Grids</label>
+            <tab>lucky</tab>
+            <resource>Lucky_FastGrids::config</resource>
+
+            <group id="general" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Algemeen</label>
+                <field id="reset" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Standaardinstellingen</label>
+                    <frontend_model>Lucky\FastGrids\Block\Adminhtml\Config\ResetButton</frontend_model>
+                </field>
+            </group>
+
+            <group id="orders" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Orders Fast</label>
+                <comment>Kolommen van Sales &gt; Orders Fast en van de snelle stand op Sales &gt; Orders.</comment>
+                <field id="fetch" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Standaardgrid</label>
+                    <frontend_model>Lucky\FastGrids\Block\Adminhtml\Config\FetchButton</frontend_model>
+                </field>
+                <field id="columns" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Kolommen</label>
+                    <frontend_model>Lucky\FastGrids\Block\Adminhtml\Config\ColumnsField</frontend_model>
+                    <backend_model>Lucky\FastGrids\Model\Config\Backend\ColumnList</backend_model>
+                </field>
+            </group>
+
+            <group id="customers" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Customers Fast</label>
+                <comment>Kolommen van Customers &gt; Customers Fast en van de snelle stand op Customers &gt; All Customers.</comment>
+                <field id="fetch" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Standaardgrid</label>
+                    <frontend_model>Lucky\FastGrids\Block\Adminhtml\Config\FetchButton</frontend_model>
+                </field>
+                <field id="columns" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Kolommen</label>
+                    <frontend_model>Lucky\FastGrids\Block\Adminhtml\Config\ColumnsField</frontend_model>
+                    <backend_model>Lucky\FastGrids\Model\Config\Backend\ColumnList</backend_model>
+                </field>
+            </group>
+
+            <group id="products" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Products Fast</label>
+                <comment>Kolommen van Catalog &gt; Products Fast en van de snelle stand op Catalog &gt; Products.</comment>
+                <field id="fetch" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Standaardgrid</label>
+                    <frontend_model>Lucky\FastGrids\Block\Adminhtml\Config\FetchButton</frontend_model>
+                </field>
+                <field id="columns" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Kolommen</label>
+                    <frontend_model>Lucky\FastGrids\Block\Adminhtml\Config\ColumnsField</frontend_model>
+                    <backend_model>Lucky\FastGrids\Model\Config\Backend\ColumnList</backend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

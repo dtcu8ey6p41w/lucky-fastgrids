@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+  Extra handle voor Customers > All Customers in de snelle stand (cookie lucky_fastgrids_customers=1).
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Lucky_FastGrids::css/fastgrids.css"/>
+        <script src="Lucky_FastGrids::js/grid.js"/>
+        <script src="Lucky_FastGrids::js/customers.js"/>
+    </head>
+    <body>
+        <referenceBlock name="customer_listing" remove="true"/>
+        <referenceContainer name="page.main.actions">
+            <block class="Lucky\FastGrids\Block\Adminhtml\GridButtons" name="lucky_fastgrids_customers_buttons" before="-">
+                <arguments>
+                    <argument name="grid" xsi:type="string">customer_listing</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Lucky\FastGrids\Block\Adminhtml\Customers" name="lucky.fastgrids.customers" template="Lucky_FastGrids::customers.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

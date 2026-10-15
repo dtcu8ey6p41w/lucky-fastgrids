@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Products Fast</title>
+        <css src="Lucky_FastGrids::css/fastgrids.css"/>
+        <script src="Lucky_FastGrids::js/grid.js"/>
+        <script src="Lucky_FastGrids::js/products.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Lucky\FastGrids\Block\Adminhtml\Products" name="lucky.fastgrids.products" template="Lucky_FastGrids::products.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

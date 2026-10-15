@@ -1,0 +1,68 @@
+/* Lucky_FastGrids — compacte, snelle admin-grids */
+.fastgrids { font-size: 1.3rem; }
+.fastgrids.fg-loading .fg-table { opacity: .5; }
+
+.fg-filters { display: flex; flex-wrap: wrap; gap: 1rem 1.2rem; align-items: flex-end; margin: 0 0 1.2rem; }
+.fg-f { display: flex; flex-direction: column; gap: .3rem; position: relative; }
+.fg-f > span { font-size: 1.2rem; color: #666; }
+/* Alle filtervelden exact even hoog */
+.fg-f input, .fg-f select, .fg-f .fg-dropdown > summary, .fg-f-actions button {
+    box-sizing: border-box; height: 3.2rem; min-height: 0; margin: 0; padding: 0 .6rem;
+    border: 1px solid #adadad; border-radius: 2px; font-size: 1.3rem; line-height: 3rem; vertical-align: top;
+}
+.fg-f select { padding-right: 2.4rem; }
+.fg-f-actions button { padding: 0 1.4rem; line-height: 1; cursor: pointer; }
+.fg-f-actions .action-primary { border-color: #eb5202; }
+.fg-f-q input { width: 28rem; }
+.fg-f-actions { flex-direction: row; gap: .6rem; }
+
+.fg-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin: .6rem 0; flex-wrap: wrap; }
+.fg-bar-right { display: flex; align-items: center; gap: 1.6rem; }
+.fg-summary { color: #333; }
+.fg-limit select { min-height: 2.8rem; margin-left: .3rem; }
+
+/* Uitklapmenu met vinkjes (filters en kolomkiezer) */
+.fg-dropdown { position: relative; }
+.fg-dropdown > summary { list-style: none; cursor: pointer; user-select: none; }
+.fg-dropdown > summary::-webkit-details-marker { display: none; }
+.fg-f .fg-dropdown > summary { min-width: 16rem; padding-right: 2.4rem; background: #fff; display: flex; align-items: center; position: relative; white-space: nowrap; }
+.fg-f .fg-dropdown > summary::after { content: ''; position: absolute; right: .9rem; top: 50%; width: .6rem; height: .6rem; border-right: 2px solid #514943; border-bottom: 2px solid #514943; transform: translateY(-70%) rotate(45deg); }
+.fg-dropdown-list { position: absolute; left: 0; z-index: 20; background: #fff; border: 1px solid #ccc; box-shadow: 0 2px 8px rgba(0,0,0,.15); padding: .8rem 1.2rem; display: grid; gap: .4rem 1.5rem; min-width: 22rem; margin-top: .2rem; }
+.fg-dropdown-list label { white-space: nowrap; cursor: pointer; display: block; }
+.fg-dropdown-list input { margin-right: .4rem; vertical-align: middle; }
+.fg-columns > summary { color: #008bdb; }
+.fg-columns .fg-dropdown-list { left: auto; right: 0; grid-template-columns: 1fr 1fr; min-width: 30rem; }
+
+.fg-pager { display: flex; gap: .2rem; align-items: center; }
+.fg-pager button { min-width: 3rem; height: 2.8rem; border: 1px solid #adadad; background: #fff; border-radius: 2px; cursor: pointer; padding: 0 .6rem; }
+.fg-pager button:hover:not(:disabled) { background: #eee; }
+.fg-pager button:disabled { opacity: .4; cursor: default; }
+.fg-pager button.fg-current { background: #514943; color: #fff; border-color: #514943; }
+.fg-pager span { padding: 0 .4rem; color: #999; }
+
+.fg-table-wrap { overflow-x: auto; border: 1px solid #d6d6d6; background: #fff; }
+.fg-table { border-collapse: collapse; width: 100%; }
+.fg-table th, .fg-table td { padding: .55rem .8rem; border-bottom: 1px solid #e3e3e3; text-align: left; vertical-align: top; white-space: nowrap; }
+.fg-table th { position: sticky; top: 0; background: #514943; color: #fff; font-weight: 600; z-index: 1; }
+.fg-table th.fg-sortable { cursor: pointer; user-select: none; }
+.fg-table th.fg-sortable:hover { background: #3d3733; }
+.fg-table th[draggable] { cursor: grab; }
+.fg-table th.fg-dragging { opacity: .5; }
+.fg-table th.fg-drop-left { box-shadow: inset 3px 0 0 #eb5202; }
+.fg-table th.fg-drop-right { box-shadow: inset -3px 0 0 #eb5202; }
+.fg-table tbody tr:nth-child(even) { background: #f8f8f8; }
+.fg-table tbody tr[data-url] { cursor: pointer; }
+.fg-table tbody tr:hover { background: #e9f2fb; }
+.fg-table td.fg-num { text-align: right; font-variant-numeric: tabular-nums; }
+.fg-table td.fg-center { text-align: center; }
+.fg-table td.fg-long { white-space: nowrap; max-width: 28rem; overflow: hidden; text-overflow: ellipsis; }
+.fg-table td.fg-nowrap { white-space: nowrap; }
+.fg-row-link { font-weight: 600; }
+.fg-thumb { width: 4rem; height: 4rem; object-fit: cover; border-radius: 2px; vertical-align: middle; }
+
+.fg-status { display: inline-block; padding: .1rem .6rem; border-radius: 1rem; font-size: 1.15rem; background: #e0e0e0; color: #333; }
+.fg-status-processing { background: #d4e8f7; color: #1a4d7a; }
+.fg-status-complete { background: #d8efd2; color: #23571a; }
+.fg-status-pending, .fg-status-pending_payment { background: #fdeeba; color: #6b5300; }
+.fg-status-canceled, .fg-status-closed { background: #f3d4d4; color: #7a1a1a; }
+.fg-status-holded { background: #e6dcf5; color: #4a2b7a; }

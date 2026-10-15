@@ -1,0 +1,64 @@
+<?php
+/** @var \Lucky\FastGrids\Block\Adminhtml\Products $block */
+/** @var \Magento\Framework\Escaper $escaper */
+?>
+<div id="fastgrids-products" class="fastgrids" data-config="<?= $escaper->escapeHtmlAttr($block->getConfigJson()) ?>">
+
+    <form class="fg-filters" id="fg-filters" autocomplete="off">
+        <label class="fg-f fg-f-q">
+            <span><?= $escaper->escapeHtml(__('Zoeken')) ?></span>
+            <input type="search" name="q" placeholder="<?= $escaper->escapeHtmlAttr(__('Naam, SKU of product-ID…')) ?>">
+        </label>
+        <div class="fg-f">
+            <span><?= $escaper->escapeHtml(__('Status')) ?></span>
+            <details class="fg-dropdown">
+                <summary data-default="<?= $escaper->escapeHtmlAttr(__('Alle')) ?>"><?= $escaper->escapeHtml(__('Alle')) ?></summary>
+                <div class="fg-dropdown-list">
+                    <?php foreach ($block->getStatusOptions() as $value => $label): ?>
+                        <label><input type="checkbox" name="status" value="<?= $escaper->escapeHtmlAttr($value) ?>"> <?= $escaper->escapeHtml($label) ?></label>
+                    <?php endforeach; ?>
+                </div>
+            </details>
+        </div>
+        <div class="fg-f">
+            <span><?= $escaper->escapeHtml(__('Zichtbaarheid')) ?></span>
+            <details class="fg-dropdown">
+                <summary data-default="<?= $escaper->escapeHtmlAttr(__('Alle')) ?>"><?= $escaper->escapeHtml(__('Alle')) ?></summary>
+                <div class="fg-dropdown-list">
+                    <?php foreach ($block->getVisibilityOptions() as $value => $label): ?>
+                        <label><input type="checkbox" name="visibility" value="<?= $escaper->escapeHtmlAttr($value) ?>"> <?= $escaper->escapeHtml($label) ?></label>
+                    <?php endforeach; ?>
+                </div>
+            </details>
+        </div>
+        <div class="fg-f">
+            <span><?= $escaper->escapeHtml(__('Type')) ?></span>
+            <details class="fg-dropdown">
+                <summary data-default="<?= $escaper->escapeHtmlAttr(__('Alle')) ?>"><?= $escaper->escapeHtml(__('Alle')) ?></summary>
+                <div class="fg-dropdown-list">
+                    <?php foreach ($block->getTypeOptions() as $value => $label): ?>
+                        <label><input type="checkbox" name="type_id" value="<?= $escaper->escapeHtmlAttr($value) ?>"> <?= $escaper->escapeHtml($label) ?></label>
+                    <?php endforeach; ?>
+                </div>
+            </details>
+        </div>
+        <?php $sets = $block->getAttributeSetOptions(); ?>
+        <?php if (count($sets) > 1): ?>
+        <label class="fg-f">
+            <span><?= $escaper->escapeHtml(__('Attributenset')) ?></span>
+            <select name="attribute_set_id">
+                <option value=""><?= $escaper->escapeHtml(__('Alle')) ?></option>
+                <?php foreach ($sets as $id => $name): ?>
+                    <option value="<?= (int) $id ?>"><?= $escaper->escapeHtml($name) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </label>
+        <?php endif; ?>
+        <div class="fg-f fg-f-actions">
+            <button type="submit" class="action-primary"><?= $escaper->escapeHtml(__('Filter')) ?></button>
+            <button type="button" class="action-secondary" id="fg-reset"><?= $escaper->escapeHtml(__('Wissen')) ?></button>
+        </div>
+    </form>
+
+    <?= /* @noEscape */ $block->fetchView($block->getTemplateFile('Lucky_FastGrids::grid_table.phtml')) ?>
+</div>

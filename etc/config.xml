@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+  Geen vaste kolomlijsten hier: leeg = de standaard uit de catalogus (door de beheerder opgeslagen
+  standaard, anders de ingebouwde standaard). Zo werkt "Terug naar standaard" met de opgeslagen set.
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <lucky_fastgrids>
+            <orders>
+                <columns/>
+                <defaults/>
+            </orders>
+            <customers>
+                <columns/>
+                <defaults/>
+            </customers>
+            <products>
+                <columns/>
+                <defaults/>
+            </products>
+        </lucky_fastgrids>
+    </default>
+</config>

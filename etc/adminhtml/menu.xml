@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Lucky_FastGrids::orders"
+             title="Orders Fast"
+             translate="title"
+             module="Lucky_FastGrids"
+             sortOrder="15"
+             parent="Magento_Sales::sales_operation"
+             action="fastgrids/orders/index"
+             resource="Lucky_FastGrids::orders"/>
+        <add id="Lucky_FastGrids::customers"
+             title="Customers Fast"
+             translate="title"
+             module="Lucky_FastGrids"
+             sortOrder="15"
+             parent="Magento_Customer::customer"
+             action="fastgrids/customers/index"
+             resource="Lucky_FastGrids::customers"/>
+        <add id="Lucky_FastGrids::products"
+             title="Products Fast"
+             translate="title"
+             module="Lucky_FastGrids"
+             sortOrder="15"
+             parent="Magento_Catalog::inventory"
+             action="fastgrids/products/index"
+             resource="Lucky_FastGrids::products"/>
+    </menu>
+</config>

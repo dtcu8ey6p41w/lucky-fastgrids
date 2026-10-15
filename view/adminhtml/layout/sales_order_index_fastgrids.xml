@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+  Extra handle voor Sales > Orders in de snelle stand (cookie lucky_fastgrids_orders=1):
+  het Magento UI-grid (zoekbalk, filters, views, kolommen, export, massacties) wordt niet
+  gerenderd; in plaats daarvan het Orders Fast-grid. De toolbar-knoppen komen via GridButtons terug.
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Lucky_FastGrids::css/fastgrids.css"/>
+        <script src="Lucky_FastGrids::js/grid.js"/>
+        <script src="Lucky_FastGrids::js/orders.js"/>
+    </head>
+    <body>
+        <referenceBlock name="sales_order_grid" remove="true"/>
+        <referenceContainer name="page.main.actions">
+            <block class="Lucky\FastGrids\Block\Adminhtml\GridButtons" name="lucky_fastgrids_orders_buttons" before="-">
+                <arguments>
+                    <argument name="grid" xsi:type="string">sales_order_grid</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Lucky\FastGrids\Block\Adminhtml\Orders" name="lucky.fastgrids.orders" template="Lucky_FastGrids::orders.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

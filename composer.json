@@ -1,0 +1,26 @@
+{
+    "name": "lucky/module-fast-grids",
+    "description": "Fast, lightweight admin grids for orders, customers and products (Orders Fast / Customers Fast / Products Fast) with configurable columns with a switch button on the standard Magento grids.",
+    "type": "magento2-module",
+    "version": "1.2.0",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.1",
+        "magento/framework": "*",
+        "magento/module-backend": "*",
+        "magento/module-ui": "*",
+        "magento/module-sales": "*",
+        "magento/module-customer": "*",
+        "magento/module-catalog": "*",
+        "magento/module-payment": "*",
+        "magento/module-directory": "*",
+        "magento/module-store": "*",
+        "magento/module-eav": "*"
+    },
+    "autoload": {
+        "files": ["registration.php"],
+        "psr-4": {
+            "Lucky\\FastGrids\\": ""
+        }
+    }
+}

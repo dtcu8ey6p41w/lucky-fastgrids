@@ -1,0 +1,72 @@
+<?php
+/** @var \Lucky\FastGrids\Block\Adminhtml\Orders $block */
+/** @var \Magento\Framework\Escaper $escaper */
+?>
+<div id="fastgrids-orders" class="fastgrids" data-config="<?= $escaper->escapeHtmlAttr($block->getConfigJson()) ?>">
+
+    <form class="fg-filters" id="fg-filters" autocomplete="off">
+        <label class="fg-f fg-f-q">
+            <span><?= $escaper->escapeHtml(__('Zoeken')) ?></span>
+            <input type="search" name="q" placeholder="<?= $escaper->escapeHtmlAttr(__('Ordernummer, naam, e-mail, adres…')) ?>">
+        </label>
+        <div class="fg-f">
+            <span><?= $escaper->escapeHtml(__('Status')) ?></span>
+            <details class="fg-dropdown">
+                <summary data-default="<?= $escaper->escapeHtmlAttr(__('Alle')) ?>"><?= $escaper->escapeHtml(__('Alle')) ?></summary>
+                <div class="fg-dropdown-list">
+                    <?php foreach ($block->getStatusOptions() as $code => $label): ?>
+                        <label><input type="checkbox" name="status" value="<?= $escaper->escapeHtmlAttr($code) ?>"> <?= $escaper->escapeHtml($label) ?></label>
+                    <?php endforeach; ?>
+                </div>
+            </details>
+        </div>
+        <div class="fg-f">
+            <span><?= $escaper->escapeHtml(__('Klantgroep')) ?></span>
+            <details class="fg-dropdown">
+                <summary data-default="<?= $escaper->escapeHtmlAttr(__('Alle')) ?>"><?= $escaper->escapeHtml(__('Alle')) ?></summary>
+                <div class="fg-dropdown-list">
+                    <?php foreach ($block->getGroupOptions() as $id => $label): ?>
+                        <label><input type="checkbox" name="customer_group" value="<?= (int) $id ?>"> <?= $escaper->escapeHtml($label) ?></label>
+                    <?php endforeach; ?>
+                </div>
+            </details>
+        </div>
+        <?php if ($block->hasPaymentFilter()): ?>
+        <div class="fg-f">
+            <span><?= $escaper->escapeHtml(__('Betaalmethode')) ?></span>
+            <details class="fg-dropdown">
+                <summary data-default="<?= $escaper->escapeHtmlAttr(__('Alle')) ?>"><?= $escaper->escapeHtml(__('Alle')) ?></summary>
+                <div class="fg-dropdown-list">
+                    <?php foreach ($block->getPaymentOptions() as $code => $label): ?>
+                        <label><input type="checkbox" name="payment_method" value="<?= $escaper->escapeHtmlAttr($code) ?>"> <?= $escaper->escapeHtml($label) ?></label>
+                    <?php endforeach; ?>
+                </div>
+            </details>
+        </div>
+        <?php endif; ?>
+        <label class="fg-f">
+            <span><?= $escaper->escapeHtml(__('Besteld van')) ?></span>
+            <input type="date" name="created_from">
+        </label>
+        <label class="fg-f">
+            <span><?= $escaper->escapeHtml(__('t/m')) ?></span>
+            <input type="date" name="created_to">
+        </label>
+        <?php if ($block->hasDeliveryDate()): ?>
+        <label class="fg-f">
+            <span><?= $escaper->escapeHtml(__('Bezorgdatum van')) ?></span>
+            <input type="date" name="delivery_from">
+        </label>
+        <label class="fg-f">
+            <span><?= $escaper->escapeHtml(__('t/m')) ?></span>
+            <input type="date" name="delivery_to">
+        </label>
+        <?php endif; ?>
+        <div class="fg-f fg-f-actions">
+            <button type="submit" class="action-primary"><?= $escaper->escapeHtml(__('Filter')) ?></button>
+            <button type="button" class="action-secondary" id="fg-reset"><?= $escaper->escapeHtml(__('Wissen')) ?></button>
+        </div>
+    </form>
+
+    <?= /* @noEscape */ $block->fetchView($block->getTemplateFile('Lucky_FastGrids::grid_table.phtml')) ?>
+</div>

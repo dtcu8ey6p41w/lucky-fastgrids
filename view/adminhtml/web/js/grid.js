@@ -355,7 +355,13 @@
             root.classList.add('fg-loading');
             saveState();
             fetch(cfg.dataUrl + '?' + buildQuery(), { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-                .then(function (r) { return r.json(); })
+                .then(function (r) {
+                    // Verlopen sessie of geen rechten: Magento stuurt dan een HTML-pagina i.p.v. JSON
+                    if ((r.headers.get('Content-Type') || '').indexOf('json') === -1) {
+                        throw new Error(L.reload || 'Sessie verlopen of geen rechten; herlaad de pagina.');
+                    }
+                    return r.json();
+                })
                 .then(function (data) {
                     if (seq !== requestSeq) { return; }
                     if (data.error) { throw new Error(data.error); }

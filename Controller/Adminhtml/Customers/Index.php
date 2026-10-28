@@ -15,6 +15,8 @@ use Magento\Framework\View\Result\PageFactory;
 class Index extends Action implements HttpGetActionInterface
 {
     public const ADMIN_RESOURCE = 'Lucky_FastGrids::customers';
+    /** Het snelle grid toont dezelfde gegevens als het standaardgrid: dat recht is ook nodig. */
+    private const STANDARD_RESOURCE = 'Magento_Customer::manage';
 
     public function __construct(
         Context $context,
@@ -32,5 +34,10 @@ class Index extends Action implements HttpGetActionInterface
         $page->getConfig()->getTitle()->prepend((string) __('Customers Fast'));
 
         return $page;
+    }
+
+    protected function _isAllowed(): bool
+    {
+        return parent::_isAllowed() && $this->_authorization->isAllowed(self::STANDARD_RESOURCE);
     }
 }

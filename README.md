@@ -111,7 +111,10 @@ Geen database-wijzigingen. Instellingen staan in `core_config_data` onder `lucky
 - `Lucky_FastGrids::customers` (onder Customers) voor Customers Fast
 - `Lucky_FastGrids::products` (onder Catalog > Inventory) voor Products Fast
 - `Lucky_FastGrids::config` (onder Stores > Configuration) voor de instellingen
-- De switch-knoppen gebruiken de bestaande rechten van de standaardpagina's.
+- De snelle grids vereisen daarnaast het recht van het standaardgrid (`Magento_Sales::sales_order`,
+  `Magento_Customer::manage`, `Magento_Catalog::products`). De switch-knop verschijnt alleen voor beheerders
+  met het Fast-recht van dat grid.
+- Klantattributen in Orders Fast (`customer_<code>`) worden alleen geladen voor beheerders met `Magento_Customer::manage`.
 
 ## Verwijderen
 
@@ -120,7 +123,8 @@ bin/magento module:disable Lucky_FastGrids
 bin/magento setup:upgrade
 ```
 
-en verwijder de map. Er blijft niets achter in de database.
+en verwijder de map. In de database blijven alleen de instellingen in `core_config_data` achter; verwijder die met
+`DELETE FROM core_config_data WHERE path LIKE 'lucky_fastgrids/%';`
 
 ## Opmerkingen
 
@@ -128,4 +132,4 @@ en verwijder de map. Er blijft niets achter in de database.
   `customer_grid_flat` leeg; `bin/magento indexer:reindex customer_grid` lost dat op.
 - Massa-acties (Actions-menu) zijn bewust niet aanwezig in de snelle stand; schakel daarvoor
   terug naar het standaardgrid.
-- Teksten zijn Nederlands en via `__()` vertaalbaar (i18n/*.csv).
+- Teksten zijn Nederlands en via `__()` vertaalbaar; de module levert zelf geen `i18n/*.csv` mee.

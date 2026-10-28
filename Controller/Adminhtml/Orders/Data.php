@@ -11,6 +11,7 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Psr\Log\LoggerInterface;
 
 /**
  * JSON-endpoint voor de Orders Fast-lijst.
@@ -18,13 +19,16 @@ use Magento\Framework\Controller\Result\JsonFactory;
 class Data extends Action implements HttpGetActionInterface
 {
     public const ADMIN_RESOURCE = 'Lucky_FastGrids::orders';
+    /** Het snelle grid toont dezelfde gegevens als het standaardgrid: dat recht is ook nodig. */
+    private const STANDARD_RESOURCE = 'Magento_Sales::sales_order';
 
     public function __construct(
         Context $context,
         private JsonFactory $jsonFactory,
         private OrderList $orderList,
         private RowFormatter $formatter,
-        private DateFormatter $dates
+        private DateFormatter $dates,
+        private LoggerInterface $logger
     ) {
         parent::__construct($context);
     }
@@ -57,10 +61,17 @@ class Data extends Action implements HttpGetActionInterface
             $data['took_ms'] = (int) round((microtime(true) - $start) * 1000);
             $result->setData($data);
         } catch (\Throwable $e) {
+            // Volledige fout naar het log (en Sentry); de browser krijgt geen SQL-/stackdetails
+            $this->logger->error('Lucky_FastGrids: laden van orders mislukt: ' . $e->getMessage(), ['exception' => $e]);
             $result->setHttpResponseCode(500);
-            $result->setData(['error' => $e->getMessage()]);
+            $result->setData(['error' => (string) __('Er ging iets mis bij het laden; de fout staat in het log.')]);
         }
 
         return $result;
+    }
+
+    protected function _isAllowed(): bool
+    {
+        return parent::_isAllowed() && $this->_authorization->isAllowed(self::STANDARD_RESOURCE);
     }
 }

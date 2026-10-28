@@ -5,6 +5,7 @@ namespace Lucky\FastGrids\Model\Products;
 
 use Lucky\FastGrids\Model\Catalog\ProductsCatalog;
 use Lucky\FastGrids\Model\PluginColumns;
+use Lucky\FastGrids\Model\Search;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DB\Select;
 
@@ -24,13 +25,16 @@ class ProductList
     public function __construct(
         private ResourceConnection $resource,
         private ProductsCatalog $catalog,
-        private PluginColumns $pluginColumns
+        private PluginColumns $pluginColumns,
+        private Search $search
     ) {
     }
 
     /** @return array{items: array, total: int, page: int, pages: int, limit: int} */
     public function search(array $f): array
     {
+        // spl_object_id's worden hergebruikt zodra oude selects zijn opgeruimd: per zoekopdracht opnieuw beginnen
+        $this->joined = [];
         $conn = $this->resource->getConnection();
         $entity = $this->resource->getTableName(ProductsCatalog::TABLE);
         $defs = $this->catalog->selected();
@@ -178,8 +182,8 @@ class ProductList
         }
         $nameAlias = $this->ensureEav($select, 'name', null);
         $select->where(implode(' OR ', [
-            $conn->quoteInto('e.sku LIKE ?', '%' . $q . '%'),
-            $conn->quoteInto($nameAlias . '.value LIKE ?', '%' . $q . '%'),
+            $conn->quoteInto('e.sku LIKE ?', $this->search->contains($q)),
+            $conn->quoteInto($nameAlias . '.value LIKE ?', $this->search->contains($q)),
         ]));
     }
 }

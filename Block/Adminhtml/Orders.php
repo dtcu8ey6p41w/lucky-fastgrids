@@ -94,8 +94,8 @@ class Orders extends Template
             'colTypes'     => $types,
             'descByDefault'=> ['created_at', 'updated_at', 'delivery_date'],
             'labels'       => [
-                'rows' => (string) __('orders'), 'shown' => (string) __('getoond'), 'total' => (string) __('totaal'),
-                'openRow' => (string) __('Open order'), 'loadError' => (string) __('Fout bij laden'), 'chosen' => (string) __('gekozen'),
+                'rows' => (string) __('orders'), 'shown' => (string) __('getoond'), 'total' => (string) __('totaal (incl. geannuleerd)'),
+                'openRow' => (string) __('Open order'), 'loadError' => (string) __('Fout bij laden'), 'reload' => (string) __('Sessie verlopen of geen rechten; herlaad de pagina.'), 'chosen' => (string) __('gekozen'),
             ],
         ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }

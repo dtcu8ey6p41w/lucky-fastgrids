@@ -67,7 +67,7 @@ class Customers extends Template
                 'rows' => (string) __('klanten'), 'shown' => (string) __('getoond'), 'openRow' => (string) __('Open klant'),
                 'login' => (string) __('Inloggen als klant'), 'loginFail' => (string) __('Inloggen als klant is mislukt.'),
                 'edit' => (string) __('Bewerken'), 'orders' => (string) __('Orders'),
-                'loadError' => (string) __('Fout bij laden'), 'chosen' => (string) __('gekozen'),
+                'loadError' => (string) __('Fout bij laden'), 'reload' => (string) __('Sessie verlopen of geen rechten; herlaad de pagina.'), 'chosen' => (string) __('gekozen'),
             ],
         ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }

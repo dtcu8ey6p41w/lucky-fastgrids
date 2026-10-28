@@ -71,7 +71,7 @@ class Products extends Template
             'descByDefault'=> ['entity_id', 'created_at', 'updated_at', 'qty', 'price'],
             'labels'       => [
                 'rows' => (string) __('producten'), 'shown' => (string) __('getoond'), 'openRow' => (string) __('Open product'),
-                'edit' => (string) __('Bewerken'), 'loadError' => (string) __('Fout bij laden'), 'chosen' => (string) __('gekozen'),
+                'edit' => (string) __('Bewerken'), 'loadError' => (string) __('Fout bij laden'), 'reload' => (string) __('Sessie verlopen of geen rechten; herlaad de pagina.'), 'chosen' => (string) __('gekozen'),
             ],
         ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }

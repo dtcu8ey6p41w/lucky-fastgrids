@@ -85,8 +85,12 @@ class PluginColumns
         if (!isset($this->columns[$componentName])) {
             $this->columns[$componentName] = [];
             try {
+                // Alleen de Columns-component(en) voorbereiden: die voegen attribuutkolommen toe en zetten
+                // opties/dataType. Listing, filters, bookmarks en toolbar zijn hier niet nodig.
                 $component = $this->uiComponentFactory->create($componentName);
-                $this->prepare($component);
+                foreach ($this->findColumns($component) as $columns) {
+                    $this->prepare($columns);
+                }
                 $this->collect($component, $this->columns[$componentName]);
             } catch (\Throwable $e) {
                 $this->logger->error('Lucky_FastGrids: UI-component ' . $componentName . ' niet opgebouwd: ' . $e->getMessage());
@@ -105,6 +109,19 @@ class PluginColumns
         } catch (\Throwable) {
             // kolommen van derden kunnen falen zonder request-context; dan alleen de XML-config
         }
+    }
+
+    /** @return Columns[] */
+    private function findColumns(UiComponentInterface $component): array
+    {
+        if ($component instanceof Columns) {
+            return [$component];
+        }
+        $found = [];
+        foreach ($component->getChildComponents() as $child) {
+            array_push($found, ...$this->findColumns($child));
+        }
+        return $found;
     }
 
     private function collect(UiComponentInterface $component, array &$out): void
@@ -165,11 +182,19 @@ class PluginColumns
             }
             return ['text' => implode(', ', $labels)];
         }
+        // Alleen HTML als het standaardgrid de kolom ook als HTML rendert (bodyTmpl ui/grid/cells/html);
+        // anders als tekst, net als het standaardgrid. Voorkomt XSS via klantinvoer in kolomwaarden.
         $str = (string) $value;
-        if ($str !== strip_tags($str)) {
+        if ($column && $this->rendersHtml($column)) {
             return ['html' => $str];
         }
         return ['text' => $str];
+    }
+
+    private function rendersHtml(UiComponentInterface $column): bool
+    {
+        $config = (array) $column->getData('config');
+        return ($config['bodyTmpl'] ?? '') === 'ui/grid/cells/html';
     }
 
     /** @return array<string,string> */

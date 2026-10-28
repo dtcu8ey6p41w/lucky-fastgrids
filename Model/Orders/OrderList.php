@@ -8,6 +8,7 @@ use Lucky\FastGrids\Model\PluginColumns;
 use Lucky\FastGrids\Model\SchemaInfo;
 use Lucky\FastGrids\Model\Search;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\AuthorizationInterface;
 use Magento\Framework\DB\Select;
 
 /**
@@ -22,12 +23,16 @@ class OrderList
 
     private const LIKE_FALLBACK = ['increment_id', 'billing_name', 'shipping_name', 'customer_email'];
 
+    /** @var array<string,int[]> zoekterm => order-id's (cijferzoekopdrachten) */
+    private array $numericMatches = [];
+
     public function __construct(
         private ResourceConnection $resource,
         private SchemaInfo $schema,
         private Search $search,
         private OrdersCatalog $catalog,
-        private PluginColumns $pluginColumns
+        private PluginColumns $pluginColumns,
+        private AuthorizationInterface $authorization
     ) {
     }
 
@@ -65,7 +70,10 @@ class OrderList
             } elseif ($def['join'] === 'delivery') {
                 $deliveryCols[$key] = $def['col'];
             } elseif ($def['join'] === 'customer') {
-                $customerCols[$key] = $def['col'];
+                // Klantattributen alleen voor beheerders met recht op klanten (de cel blijft anders leeg)
+                if ($this->authorization->isAllowed('Magento_Customer::manage')) {
+                    $customerCols[$key] = $def['col'];
+                }
             } elseif ($def['join'] === 'order') {
                 $orderCols[$key] = $def['col'];
             }
@@ -120,6 +128,30 @@ class OrderList
         ];
     }
 
+    /** @return int[] order-id's waarvan het ordernummer met $q begint of de tekst $q bevat (per zoekterm gecachet) */
+    private function numericMatches(string $q): array
+    {
+        if (!isset($this->numericMatches[$q])) {
+            $conn = $this->resource->getConnection();
+            $grid = $this->resource->getTableName(OrdersCatalog::TABLE);
+            $ids = $conn->fetchCol(
+                $conn->select()->from(['main_table' => $grid], ['entity_id'])->where('main_table.increment_id LIKE ?', $q . '%')
+            );
+            $text = $this->search->condition(
+                $conn, $q,
+                $this->schema->fulltextColumns(OrdersCatalog::TABLE),
+                array_values(array_intersect(self::LIKE_FALLBACK, $this->schema->columns(OrdersCatalog::TABLE)))
+            );
+            if ($text !== null) {
+                $ids = array_merge($ids, $conn->fetchCol(
+                    $conn->select()->from(['main_table' => $grid], ['entity_id'])->where($text)
+                ));
+            }
+            $this->numericMatches[$q] = array_values(array_unique(array_map('intval', $ids)));
+        }
+        return $this->numericMatches[$q];
+    }
+
     private function uniqueColumns(array $columns): array
     {
         $out = [];
@@ -161,7 +193,8 @@ class OrderList
             return;
         }
         if (preg_match('/^\d{3,}$/', $q)) {
-            $select->where('main_table.increment_id LIKE ?', $q . '%');
+            // Ordernummer (begint met) óf tekst (postcode, huisnummer, ...): via id's, zodat beide indexen gebruikt worden
+            $select->where('main_table.entity_id IN (?)', $this->numericMatches($q) ?: [0]);
             return;
         }
         if (filter_var($q, FILTER_VALIDATE_EMAIL)) {

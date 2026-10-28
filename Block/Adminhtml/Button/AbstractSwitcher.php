@@ -27,6 +27,10 @@ abstract class AbstractSwitcher implements ButtonProviderInterface
 
     public function getButtonData(): array
     {
+        // Zonder recht op het snelle grid geen knop (anders een grid dat geen data mag laden)
+        if (!$this->gridMode->isAllowed($this->grid())) {
+            return [];
+        }
         $fast = $this->gridMode->isFast($this->grid());
         $url = $this->urlBuilder->getUrl($this->modeRoute(), ['fast' => $fast ? 0 : 1]);
 
